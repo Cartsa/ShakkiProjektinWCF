@@ -44,4 +44,5 @@ namespace ShakkiProjektinWCF
             set { stringValue = value; }
         }
     }
+    //Apua olen jumissa kommentin sisällä!
 }
