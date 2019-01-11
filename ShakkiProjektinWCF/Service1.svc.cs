@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Data.SqlClient;
 
 namespace ShakkiProjektinWCF
 {
@@ -12,22 +13,27 @@ namespace ShakkiProjektinWCF
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        public bool Tallennus(string ValkoinenNimimerkki, string MustaNimimerkki, int Vuorot, string Voittaja)
         {
-            return string.Format("You entered: {0}", value);
+            SqlConnection yhteys = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\carol\\source\\repos\\ShakkiProjektinWCF\\ShakkiProjektinWCF\\App_Data\\ShakkiPelit.mdf;Integrated Security=True");
+            SqlCommand Tallenna = new SqlCommand("INSERT INTO Table(ValkoinenPelaaja,MustaPelaaja,Vuoroja_pelattu,Voittaja) VALUES (@ValkoinenNimimerkki,@MustaNimimerkki,@Vuorot,@Voittaja)", yhteys);
+            Tallenna.Parameters.AddWithValue("@ValkoinenNimimerkki",ValkoinenNimimerkki);
+            Tallenna.Parameters.AddWithValue("@MustaNimimerkki", MustaNimimerkki);
+            Tallenna.Parameters.AddWithValue("@Vuorot", Vuorot);
+            Tallenna.Parameters.AddWithValue("@Voittaja", Voittaja);
+            try
+            {
+                yhteys.Open();
+                Tallenna.ExecuteNonQuery();
+                yhteys.Close();
+                return true;
+            }catch(Exception e)
+            {
+                yhteys.Close();
+                return false;
+            }
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
-        {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
-        }
+      
     }
 }
