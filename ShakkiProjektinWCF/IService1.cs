@@ -14,7 +14,7 @@ namespace ShakkiProjektinWCF
     {
 
         [OperationContract]
-        bool Tallennus(string ValkoinenNimimerkki,string MustaNimimerkki,int Vuorot,string Voittaja);
+        string Tallennus(string ValkoinenNimimerkki,string MustaNimimerkki,int Vuorot,string Voittaja);
         
 
         // TODO: Add your service operations here

@@ -13,10 +13,10 @@ namespace ShakkiProjektinWCF
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        public bool Tallennus(string ValkoinenNimimerkki, string MustaNimimerkki, int Vuorot, string Voittaja)
+        public string Tallennus(string ValkoinenNimimerkki, string MustaNimimerkki, int Vuorot, string Voittaja)
         {
             SqlConnection yhteys = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\carol\\source\\repos\\ShakkiProjektinWCF\\ShakkiProjektinWCF\\App_Data\\ShakkiPelit.mdf;Integrated Security=True");
-            SqlCommand Tallenna = new SqlCommand("INSERT INTO Table(ValkoinenPelaaja,MustaPelaaja,Vuoroja_pelattu,Voittaja) VALUES (@ValkoinenNimimerkki,@MustaNimimerkki,@Vuorot,@Voittaja)", yhteys);
+            SqlCommand Tallenna = new SqlCommand("INSERT INTO Tilastot(ValkoinenPelaaja,MustaPelaaja,Vuoroja_pelattu,Voittaja) VALUES (@ValkoinenNimimerkki,@MustaNimimerkki,@Vuorot,@Voittaja)", yhteys);
             Tallenna.Parameters.AddWithValue("@ValkoinenNimimerkki",ValkoinenNimimerkki);
             Tallenna.Parameters.AddWithValue("@MustaNimimerkki", MustaNimimerkki);
             Tallenna.Parameters.AddWithValue("@Vuorot", Vuorot);
@@ -26,11 +26,11 @@ namespace ShakkiProjektinWCF
                 yhteys.Open();
                 Tallenna.ExecuteNonQuery();
                 yhteys.Close();
-                return true;
+                return "Toimi";
             }catch(Exception e)
             {
                 yhteys.Close();
-                return false;
+                return "Ei toimi: " + e;
             }
         }
 
